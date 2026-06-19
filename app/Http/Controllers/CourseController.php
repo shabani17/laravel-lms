@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteCourseRequest;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
@@ -29,7 +30,7 @@ class CourseController extends Controller
 
         $course = Course::create([
             ...$data,
-            'teacher_id' => 1,
+            'teacher_id' => $request->user()->id,
         ]);
 
         return response()->json([
@@ -61,7 +62,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(DeleteCourseRequest $request, Course $course)
     {
         $course->delete();
 
