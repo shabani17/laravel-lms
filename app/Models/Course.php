@@ -27,4 +27,9 @@ public function students()
     ->withPivot('status', 'enrolled_at');
 }
 
+public function enrollments()
+{
+    return $this->hasMany(Enrollment::class);
+}
+
 }
