@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Policies\CoursePolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

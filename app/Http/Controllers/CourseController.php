@@ -2,70 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DeleteCourseRequest;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
+use App\Services\CourseService;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private CourseService $courseService;
+
+    public function __construct(CourseService $courseService)
+    {
+        $this->courseService = $courseService;
+    }
+
     public function index()
     {
-        $courses= Course::with('teacher')->get();
+        $courses = Course::with('teacher')->get();
 
         return CourseResource::collection($courses);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreCourseRequest $request)
     {
-        $data = $request->validated();
-
-        $course = Course::create([
-            ...$data,
-            'teacher_id' => $request->user()->id,
-        ]);
+        $course = $this->courseService->create(
+            $request->validated(),
+            $request->user()
+        );
 
         return response()->json([
             'message' => 'Course created successfully',
             'data' => $course
         ], 201);
-
-        
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Course $course)
     {
         return new CourseResource($course->load('teacher'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        $course->update($request->validated());
+        $this->authorize('update', $course);
+
+        $course = $this->courseService->update(
+            $course,
+            $request->validated()
+        );
 
         return new CourseResource($course->load('teacher'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DeleteCourseRequest $request, Course $course)
+    public function destroy(Course $course)
     {
-        $course->delete();
+        $this->authorize('delete', $course);
+
+        $this->courseService->delete($course);
 
         return response()->noContent();
+    }
+
+    public function teacherCourses(Request $request)
+    {
+        $courses = $this->courseService->teacherCourses($request->user());
+
+        return response()->json([
+            'data' => $courses,
+        ]);
+    }
+
+    public function students(Course $course)
+    {
+        $this->authorize('viewStudents', $course);
+
+        $students = $this->courseService->courseStudent($course);
+
+        return response()->json([
+            'data' => $students,
+        ]);
     }
 }

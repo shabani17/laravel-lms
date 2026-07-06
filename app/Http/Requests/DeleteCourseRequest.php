@@ -11,7 +11,7 @@ class DeleteCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('delete', $this->course);
+        return true;
     }
 
     /**
