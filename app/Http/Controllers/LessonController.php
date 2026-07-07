@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LessonRequest;
+use App\Http\Resources\LessonResource;
 use App\Models\Course;
 use App\Services\LessonService;
-use Illuminate\Http\Request;
+
 
 
 class LessonController extends Controller
@@ -17,7 +18,7 @@ class LessonController extends Controller
     public function index(Course $course)
     {
         return response()->json([
-            'data' => $this->lessonService->list($course)
+            'data' => LessonResource::collection($this->lessonService->list($course)),
         ]);
     }
 
@@ -30,7 +31,7 @@ class LessonController extends Controller
 
         return response()->json([
             'message' => 'Lesson created successfully',
-            'data' => $lesson
+            'data' => new LessonResource($lesson),
         ],201);
     }
 }

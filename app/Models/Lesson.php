@@ -8,12 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends Model
 {
 
+ 
     protected $fillable = [
         'course_id',
         'title',
-        'content',
-        'order'
+        'description',
+        'video_url',
+        'order',
+        'is_free',
+        'duration',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_free' => 'boolean',
+            'duration' => 'integer',
+            'order' => 'integer',
+        ];
+    }
+
 
     public function course()
     {
