@@ -6,7 +6,7 @@ use App\Http\Requests\LessonRequest;
 use App\Models\Course;
 use App\Services\LessonService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+
 
 class LessonController extends Controller
 {
@@ -31,6 +31,6 @@ class LessonController extends Controller
         return response()->json([
             'message' => 'Lesson created successfully',
             'data' => $lesson
-        ]);
+        ],201);
     }
 }
