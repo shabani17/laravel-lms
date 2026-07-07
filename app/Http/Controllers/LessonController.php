@@ -17,6 +17,9 @@ class LessonController extends Controller
 
     public function index(Course $course)
     {
+
+        $this->authorize('viewLessons', $course);
+
         return response()->json([
             'data' => LessonResource::collection($this->lessonService->list($course)),
         ]);

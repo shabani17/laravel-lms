@@ -73,5 +73,11 @@ class CoursePolicy
     {
         return $user->id === $course->teacher_id;
     }
+
+    public function viewLessons(User $user , Course $course): bool
+    {
+        return $user->id === $course->teacher_id ||
+        $course->students()->where('users.id', $user->id)->exists();
+    }
     
 }
