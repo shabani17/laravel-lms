@@ -22,4 +22,9 @@ class LessonService
     {
         return $course->lessons()->orderBy('order')->get();
     }
+
+    public function show(Lesson $lesson): Lesson
+    {
+        return $lesson;
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LessonRequest;
 use App\Http\Resources\LessonResource;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Services\LessonService;
 
 
@@ -36,5 +37,14 @@ class LessonController extends Controller
             'message' => 'Lesson created successfully',
             'data' => new LessonResource($lesson),
         ],201);
+    }
+
+    public function show(Lesson $lesson)
+    {
+        $this->authorize('view', $lesson);
+
+        return response()->json([
+            'data' => new LessonResource($this->lessonService->show($lesson)),
+        ]);
     }
 }

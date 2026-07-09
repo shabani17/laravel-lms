@@ -23,4 +23,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/teacher/courses', [CourseController::class , 'teacherCourses']);
     Route::get('/courses/{course}/lessons', [LessonController::class, 'index']);
     Route::post('/courses/{course}/lessons', [LessonController::class, 'store']);
+    Route::get('/lessons/{lesson}', [LessonController::class , 'show']);
 });
