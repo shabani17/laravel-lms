@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LessonRequest;
+use App\Http\Resources\LessonProgressResource;
 use App\Http\Resources\LessonResource;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Services\LessonService;
+use Illuminate\Http\Request;
+
 
 
 
@@ -46,5 +49,18 @@ class LessonController extends Controller
         return response()->json([
             'data' => new LessonResource($this->lessonService->show($lesson)),
         ]);
+    }
+
+    public function complete(Request $request , Lesson $lesson)
+    {
+        $this->authorize('view', $lesson);
+        
+        $progress = $this->lessonService->complete($request->user(), $lesson);
+
+        return response()->json([
+            'message'=> 'Lesson completed successfully.' ,
+            'data'=> new LessonProgressResource($progress) ,
+        ]);
+
     }
 }
