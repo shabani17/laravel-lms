@@ -79,5 +79,12 @@ class CoursePolicy
         return $user->id === $course->teacher_id ||
         $course->students()->where('users.id', $user->id)->exists();
     }
+
+    public function viewProgress(User $user , Course $course): bool
+    {
+        return $user->id === $course->teacher_id || 
+        $course->students()->where('users.id', $user->id)->exists();
+    }
+
     
 }

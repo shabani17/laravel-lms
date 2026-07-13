@@ -16,6 +16,8 @@ class CourseProgressController extends Controller
 
     public function show(Request $request, Course $course)
     {
+        $this->authorize('viewProgress', $course);
+
         $progress = $this->progressService->calculate(
             $request->user(),
             $course
