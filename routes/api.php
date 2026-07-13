@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseProgressController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LessonController;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/courses/{course}/lessons', [LessonController::class, 'store']);
     Route::get('/lessons/{lesson}', [LessonController::class , 'show']);
     Route::post('/lessons/{lesson}/complete', [LessonController::class , 'complete']);
+    Route::get('/courses/{course}/progress', [CourseProgressController::class, 'show']);
 });
