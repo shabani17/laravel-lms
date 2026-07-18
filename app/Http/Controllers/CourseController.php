@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\CourseListRequest;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
+use App\Mappers\CourseFilterMapper;
 use App\Models\Course;
 use App\Services\CourseService;
 use Illuminate\Http\Request;
+
 
 class CourseController extends Controller
 {
@@ -18,11 +22,14 @@ class CourseController extends Controller
         $this->courseService = $courseService;
     }
 
-    public function index()
+    public function index(CourseListRequest $request)
     {
-        $courses = Course::with('teacher')->get();
+        $filters = CourseFilterMapper::fromRequest($request);
+
+        $courses = $this->courseService->list($filters);
 
         return CourseResource::collection($courses);
+        
     }
 
     public function store(StoreCourseRequest $request)
