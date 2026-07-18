@@ -36,7 +36,7 @@ class CourseListRequest extends FormRequest
 
             'sort' => [
                 'nullable',
-                'in:latest,oldest',
+                'in:latest,price_high,price_low',
             ],
 
             'per_page' => [

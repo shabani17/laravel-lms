@@ -41,6 +41,7 @@ class CourseService
     public function list(CourseFilterDTO $filters)
     {
         $query = Course::query();
+
         $query->with('teacher');
 
         $query->when($filters->search, function ($query, $search) {
@@ -49,6 +50,15 @@ class CourseService
 
         $query->when($filters->teacherId, function ($query, $teacherId) {
             $query->where('teacher_id', $teacherId);
+        });
+
+        $query->when($filters->sort, function ($query, $sort) {
+            match ($sort) {
+                'latest' => $query->latest(),
+                'price_high' => $query->orderByDesc('price'),
+                'price_low' => $query->orderBy('price'),
+                default => null,
+            };
         });
 
         return $query->paginate($filters->perPage);
