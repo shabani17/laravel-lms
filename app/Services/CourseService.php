@@ -3,29 +3,35 @@
 namespace App\Services;
 
 use App\DTOs\CourseFilterDTO;
-use App\Models\Course;
 use App\Models\User;
+use App\Repositories\Contracts\CourseRepositoryInterface;
 
 class CourseService
 {
-    public function create(array $data, User $user): Course
+
+    private CourseRepositoryInterface $courseRepository;
+
+    public function __construct(CourseRepositoryInterface $courseRepository)
     {
-        return Course::create([
+        $this->courseRepository = $courseRepository ;
+    }
+
+    public function create(array $data, User $user)
+    {
+        return $this->courseRepository->create([
             ...$data,
             'teacher_id' => $user->id,
         ]);
     }
 
-    public function update(Course $course, array $data): Course
+    public function update(Course $course, array $data)
     {
-        $course->update($data);
-
-        return $course;
+        return $this->courseRepository->update($course, $data);
     }
 
     public function delete(Course $course): void
     {
-        $course->delete();
+        $this->courseRepository->delete($course);
     }
 
     public function teacherCourses(User $user)
@@ -40,35 +46,6 @@ class CourseService
 
     public function list(CourseFilterDTO $filters)
     {
-        $query = Course::query();
-
-        $query->with('teacher');
-
-        $query->when($filters->search, function ($query, $search) {
-            $query->where('title', 'like', "%{$search}%");
-        });
-
-        $query->when($filters->teacherId, function ($query, $teacherId) {
-            $query->where('teacher_id', $teacherId);
-        });
-
-        $query->when($filters->status, function ($query, $status) {
-            $query->where('status', $status);
-        });
-
-        $query->when($filters->level, function ($query, $level) {
-            $query->where('level', $level);
-        });
-
-        $query->when($filters->sort, function ($query, $sort) {
-            match ($sort) {
-                'latest' => $query->latest(),
-                'price_high' => $query->orderByDesc('price'),
-                'price_low' => $query->orderBy('price'),
-                default => null,
-            };
-        });
-
-        return $query->paginate($filters->perPage);
+        return $this->courseRepository->list($filters);
     }
 }
