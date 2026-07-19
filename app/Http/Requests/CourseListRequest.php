@@ -33,7 +33,14 @@ class CourseListRequest extends FormRequest
                 'integer',
                 'exists:users,id',
             ],
-
+            'status' => [
+                'nullable',
+                'in:draft,published',
+            ],
+            'level' => [
+                'nullable',
+                'in:beginner,intermediate,advanced'
+            ],
             'sort' => [
                 'nullable',
                 'in:latest,price_high,price_low',
@@ -43,7 +50,7 @@ class CourseListRequest extends FormRequest
                 'nullable',
                 'integer',
                 'min:5',
-                'max:50',
+                'max:100',
             ],
         ];
     }

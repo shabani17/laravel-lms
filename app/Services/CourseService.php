@@ -45,11 +45,19 @@ class CourseService
         $query->with('teacher');
 
         $query->when($filters->search, function ($query, $search) {
-            $query->where('title', 'like', '%' . $search . '%');
+            $query->where('title', 'like', "%{$search}%");
         });
 
         $query->when($filters->teacherId, function ($query, $teacherId) {
             $query->where('teacher_id', $teacherId);
+        });
+
+        $query->when($filters->status, function ($query, $status) {
+            $query->where('status', $status);
+        });
+
+        $query->when($filters->level, function ($query, $level) {
+            $query->where('level', $level);
         });
 
         $query->when($filters->sort, function ($query, $sort) {

@@ -14,6 +14,8 @@ class CourseFilterMapper
         return new CourseFilterDTO(
             search: $request->validated('search'),
             teacherId: $request->validated('teacher'),
+            status: $request->validated('status'),
+            level: $request->validated('level'),
             sort: $request->validated('sort'),
             perPage: $request->validated('per_page', 10),
         );
