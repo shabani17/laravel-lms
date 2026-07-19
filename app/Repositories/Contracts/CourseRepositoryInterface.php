@@ -4,10 +4,11 @@ namespace App\Repositories\Contracts;
 
 use App\DTOs\CourseFilterDTO;
 use App\Models\Course;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface CourseRepositoryInterface
 {
-    public function list(CourseFilterDTO $filters);
+    public function list(CourseFilterDTO $filters): LengthAwarePaginator;
 
     public function find(Course $course): Course;
 

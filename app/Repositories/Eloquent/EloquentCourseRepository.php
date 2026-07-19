@@ -5,10 +5,11 @@ namespace App\Repositories\Eloquent;
 use App\DTOs\CourseFilterDTO;
 use App\Models\Course;
 use App\Repositories\Contracts\CourseRepositoryInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EloquentCourseRepository implements CourseRepositoryInterface
 {
-    public function list(CourseFilterDTO $filters)
+    public function list(CourseFilterDTO $filters): LengthAwarePaginator
     {
         $query = Course::query();
 
