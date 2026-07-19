@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTOs\CourseFilterDTO;
+use App\Models\Course;
 use App\Models\User;
 use App\Repositories\Contracts\CourseRepositoryInterface;
 
