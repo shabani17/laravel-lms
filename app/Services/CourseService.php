@@ -9,15 +9,14 @@ use App\Repositories\Contracts\CourseRepositoryInterface;
 
 class CourseService
 {
-
     private CourseRepositoryInterface $courseRepository;
 
     public function __construct(CourseRepositoryInterface $courseRepository)
     {
-        $this->courseRepository = $courseRepository ;
+        $this->courseRepository = $courseRepository;
     }
 
-    public function create(array $data, User $user)
+    public function create(array $data, User $user): Course
     {
         return $this->courseRepository->create([
             ...$data,
@@ -25,7 +24,7 @@ class CourseService
         ]);
     }
 
-    public function update(Course $course, array $data)
+    public function update(Course $course, array $data): Course
     {
         return $this->courseRepository->update($course, $data);
     }

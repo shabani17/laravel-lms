@@ -6,11 +6,14 @@ use App\DTOs\CourseFilterDTO;
 use App\Models\Course;
 use App\Repositories\Contracts\CourseRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Support\CacheKeys;
+use Illuminate\Support\Facades\Cache;
 
 class EloquentCourseRepository implements CourseRepositoryInterface
 {
     public function list(CourseFilterDTO $filters): LengthAwarePaginator
     {
+        $cacheKey = CacheKeys::courses($filters);
         $query = Course::query();
 
         $query->with('teacher');
@@ -40,7 +43,13 @@ class EloquentCourseRepository implements CourseRepositoryInterface
             };
         });
 
-        return $query->paginate($filters->perPage);
+        return Cache::tags(['courses'])->remember(
+            $cacheKey ,
+            now()->addMinutes(10),
+            function () use($query , $filters){
+                return $query->paginate($filters->perPage);
+            }
+        );
     }
 
     public function find(Course $course): Course
@@ -50,18 +59,23 @@ class EloquentCourseRepository implements CourseRepositoryInterface
 
     public function create(array $data): Course
     {
-        return Course::create($data);
+        $course = Course::create($data);
+        Cache::tags(['courses'])->flush();
+
+        return $course;
     }
 
     public function update(Course $course, array $data): Course
     {
         $course->update($data);
 
+        Cache::tags(['courses'])->flush();
         return $course;
     }
 
     public function delete(Course $course): void
     {
         $course->delete();
+        Cache::tags(['courses'])->flush();
     }
 }
