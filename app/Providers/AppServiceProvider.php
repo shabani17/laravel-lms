@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Policies\CoursePolicy;
-use Illuminate\Support\Facades\Gate;
+use App\Repositories\Contracts\CourseRepositoryInterface;
+use App\Repositories\Contracts\EnrollmentRepositoryInterface;
+use App\Repositories\Eloquent\EloquentCourseRepository;
+use App\Repositories\Eloquent\EloquentEnrollmentRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,8 +16,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-        \App\Repositories\Contracts\CourseRepositoryInterface::class,
-        \App\Repositories\Eloquent\EloquentCourseRepository::class
+            CourseRepositoryInterface::class,
+            EloquentCourseRepository::class
+        );
+
+        $this->app->bind(
+            EnrollmentRepositoryInterface::class,
+            EloquentEnrollmentRepository::class
         );
     }
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Enrollment extends Model
 {
@@ -14,12 +15,12 @@ class Enrollment extends Model
         'enrolled_at',
     ];
 
-    public function student()
+    public function student(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function course()
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
