@@ -39,7 +39,7 @@ public function enrollments(): HasMany
 
 public function lessons(): HasMany
 {
-    return $this->hasMany(Lesson::class);
+    return $this->hasMany(Lesson::class)->orderBy('order');
 }
 
 }

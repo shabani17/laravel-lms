@@ -12,10 +12,10 @@ class LessonProgress extends Model
         'completed_at',
     ];
 
-    protected $casts = [
-        'completed_at' ,
-        'datetime',
-    ];
+    protected function casts(): array
+    {
+        return ['completed_at' =>'datetime'];
+    }
 
 
     public function user()

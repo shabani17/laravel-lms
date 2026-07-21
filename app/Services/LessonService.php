@@ -1,44 +1,56 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\LessonProgress;
 use App\Models\User;
+use App\Repositories\Contracts\LessonRepositoryInterface;
 
 class LessonService
 {
-    public function create(Course $course, array $data)
+    public function __construct(
+        private LessonRepositoryInterface $lessonRepository
+    ) {}
+
+    public function create(Course $course, array $data): Lesson
     {
-        return $course->lessons()->create([
-            'title' => $data['title'],
-            'description' => $data['description'] ?? null,
-            'video_url' => $data['video_url'] ?? null,
-            'order' => $data['order'] ?? 1,
-            'is_free' => $data['is_free'] ?? false,
-            'duration' => $data['duration'] ?? null,
+        return $this->lessonRepository->create([
+            ...$data,
+            'course_id' => $course->id,
         ]);
     }
 
     public function list(Course $course)
     {
-        return $course->lessons()->orderBy('order')->get();
+        return $course->lessons;
     }
 
     public function show(Lesson $lesson): Lesson
     {
-        return $lesson;
+        return $this->lessonRepository->find($lesson);
+    }
+
+    public function update(Lesson $lesson, array $data): Lesson
+    {
+        return $this->lessonRepository->update($lesson, $data);
+    }
+
+    public function delete(Lesson $lesson): void
+    {
+        $this->lessonRepository->delete($lesson);
     }
 
     public function complete(User $user, Lesson $lesson): LessonProgress
     {
         return LessonProgress::firstOrCreate(
             [
-                'user_id' => $user->id ,
-                'lesson_id' => $lesson->id ,
+                'user_id' => $user->id,
+                'lesson_id' => $lesson->id,
             ],
             [
-                'completed_at'=> now(),
+                'completed_at' => now(),
             ]
         );
     }

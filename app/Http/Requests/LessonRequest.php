@@ -6,15 +6,12 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class LessonRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-        public function rules(): array
+    public function rules(): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],
@@ -22,14 +19,7 @@ class LessonRequest extends FormRequest
             'video_url' => ['nullable', 'url'],
             'order' => ['nullable', 'integer', 'min:1'],
             'is_free' => ['nullable', 'boolean'],
-            'duration' => ['nullable', 'integer', 'min:1'],
+            'duration' => ['nullable', 'integer', 'min:0'],
         ];
     }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    
 }
