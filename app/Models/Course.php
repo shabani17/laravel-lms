@@ -28,8 +28,8 @@ public function teacher(): BelongsTo
 
 public function students(): BelongsToMany
 {
-    return $this->belongsToMany(User::class,'enrollments','course_id','user_id')
-    ->withPivot('status', 'enrolled_at')->withTimestamps();
+    return $this->belongsToMany(User::class,'enrollments','course_id','user_id')->withTimestamps()
+    ->withPivot('status', 'enrolled_at');
 }
 
 public function enrollments(): HasMany

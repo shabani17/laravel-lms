@@ -32,9 +32,6 @@ class EnrollmentService
 
     public function myCourses(User $user)
     {
-        return $user->enrollments()
-            ->with('course')
-            ->get()
-            ->pluck('course');
+        return $user->enrolledCourses()->get();
     }
 }

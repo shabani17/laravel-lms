@@ -25,15 +25,24 @@ class User extends Authenticatable
         'role',
     ];
 
-    public function courses(){
+    public function teachingCourses()
+    {
         return $this->hasMany(Course::class, 'teacher_id');
     }
 
+
     public function enrolledCourses()
     {
-        return $this->belongsToMany(Course::class,'enrollments','user_id','course_id')->withTimestamps()
+        return $this->belongsToMany(
+            Course::class,
+            'enrollments',
+            'user_id',
+            'course_id'
+        )
+        ->withTimestamps()
         ->withPivot('status', 'enrolled_at');
     }
+
 
     public function enrollments()
     {
