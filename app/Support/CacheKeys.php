@@ -6,6 +6,9 @@ use App\DTOs\CourseFilterDTO;
 
 class CacheKeys
 {
+    public const COURSES_LIST = 'courses:list';
+
+
     public static function courses(CourseFilterDTO $filters): string
     {
         return sprintf(
@@ -18,4 +21,5 @@ class CacheKeys
             $filters->perPage
         );
     }
+
 }
