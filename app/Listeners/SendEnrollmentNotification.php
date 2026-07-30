@@ -3,15 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\StudentEnrolled;
-use App\Jobs\SendEnrollmentNotificationJob;
+use App\Notifications\EnrollmentNotification;
 
 class SendEnrollmentNotification
 {
     public function handle(StudentEnrolled $event): void
     {
-        SendEnrollmentNotificationJob::dispatch(
-            $event->user,
-            $event->course
-        );
+        $event->user->notify(new EnrollmentNotification($event->course));
     }
 }
