@@ -3,11 +3,9 @@
 namespace Database\Factories;
 
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Course>
- */
 class CourseFactory extends Factory
 {
     protected $model = Course::class;
@@ -16,14 +14,14 @@ class CourseFactory extends Factory
     {
         return [
             'title' => fake()->sentence(3),
-
             'slug' => fake()->unique()->slug(),
-
             'description' => fake()->paragraph(),
-
             'price' => fake()->randomFloat(2, 0, 1000),
-
             'thumbnail' => null,
+
+            'teacher_id' => User::factory()->create([
+                'role' => 'teacher',
+            ]),
 
             'level' => fake()->randomElement([
                 'beginner',
@@ -32,7 +30,6 @@ class CourseFactory extends Factory
             ]),
 
             'status' => 'published',
-
             'published_at' => now(),
         ];
     }
