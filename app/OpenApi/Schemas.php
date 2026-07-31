@@ -30,6 +30,36 @@ use OpenApi\Attributes as OA;
         )
     ]
 )]
+
+#[OA\Schema(
+    schema: "AuthResponse",
+    type: "object",
+    properties: [
+        new OA\Property(
+            property: "message",
+            type: "string",
+            example: "User registered successfully"
+        ),
+
+        new OA\Property(
+            property: "data",
+            type: "object",
+            properties: [
+                new OA\Property(
+                    property: "user",
+                    ref: "#/components/schemas/User"
+                ),
+
+                new OA\Property(
+                    property: "token",
+                    type: "string",
+                    example: "1|a8s7d9f6g5h4"
+                ),
+            ]
+        ),
+    ]
+)]
+
 class Schemas
 {
 }

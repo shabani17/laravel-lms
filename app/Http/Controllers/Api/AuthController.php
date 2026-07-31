@@ -69,7 +69,10 @@ class AuthController extends Controller
         responses: [
             new OA\Response(
                 response: 201,
-                description: "User registered successfully"
+                description: "User registered successfully",
+                content: new OA\JsonContent(
+                    ref: "#/components/schemas/AuthResponse"
+                )
             ),
 
             new OA\Response(
