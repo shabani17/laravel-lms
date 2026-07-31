@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
@@ -16,6 +17,67 @@ class AuthController extends Controller
     {
         $this->authService = $authService;
     }
+
+
+    #[OA\Post(
+        path: "/api/register",
+        summary: "Register a new user",
+        tags: ["Authentication"],
+
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: "User registration data",
+            content: new OA\JsonContent(
+                required: [
+                    "name",
+                    "email",
+                    "password",
+                    "password_confirmation"
+                ],
+
+                properties: [
+                    new OA\Property(
+                        property: "name",
+                        type: "string",
+                        example: "Hamid"
+                    ),
+
+                    new OA\Property(
+                        property: "email",
+                        type: "string",
+                        format: "email",
+                        example: "hamid@test.com"
+                    ),
+
+                    new OA\Property(
+                        property: "password",
+                        type: "string",
+                        format: "password",
+                        example: "password123"
+                    ),
+
+                    new OA\Property(
+                        property: "password_confirmation",
+                        type: "string",
+                        format: "password",
+                        example: "password123"
+                    ),
+                ]
+            )
+        ),
+
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: "User registered successfully"
+            ),
+
+            new OA\Response(
+                response: 422,
+                description: "Validation error"
+            )
+        ]
+    )]
 
     public function register(RegisterRequest $request)
     {
