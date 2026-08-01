@@ -9,6 +9,8 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Services\LessonService;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
+
 
 class LessonController extends Controller
 {
@@ -16,6 +18,45 @@ class LessonController extends Controller
         protected LessonService $lessonService
     ) {}
 
+    #[OA\Get(
+        path: "/api/courses/{course}/lessons",
+        summary: "Get lessons of a course",
+        tags: ["Lessons"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "course",
+                in: "path",
+                required: true,
+                description: "Course ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Lessons retrieved successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            )
+        ]
+    )]
     public function index(Course $course)
     {
         $this->authorize('view', $course);
@@ -27,6 +68,106 @@ class LessonController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/courses/{course}/lessons",
+        summary: "Create a lesson",
+        tags: ["Lessons"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "course",
+                in: "path",
+                required: true,
+                description: "Course ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        requestBody: new OA\RequestBody(
+            required: true,
+
+            content: new OA\JsonContent(
+                required: [
+                    "title"
+                ],
+
+                properties: [
+
+                    new OA\Property(
+                        property: "title",
+                        type: "string",
+                        example: "Laravel Service Container"
+                    ),
+
+                    new OA\Property(
+                        property: "description",
+                        type: "string",
+                        nullable: true,
+                        example: "Learn Laravel container"
+                    ),
+
+                    new OA\Property(
+                        property: "video_url",
+                        type: "string",
+                        format: "url",
+                        nullable: true,
+                        example: "https://example.com/video.mp4"
+                    ),
+
+                    new OA\Property(
+                        property: "order",
+                        type: "integer",
+                        nullable: true,
+                        example: 1
+                    ),
+
+                    new OA\Property(
+                        property: "is_free",
+                        type: "boolean",
+                        nullable: true,
+                        example: false
+                    ),
+
+                    new OA\Property(
+                        property: "duration",
+                        type: "integer",
+                        nullable: true,
+                        example: 45
+                    )
+                ]
+            )
+        ),
+
+        responses: [
+
+            new OA\Response(
+                response: 201,
+                description: "Lesson created successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            ),
+
+            new OA\Response(
+                response: 422,
+                description: "Validation error"
+            )
+        ]
+    )]
     public function store(LessonRequest $request, Course $course)
     {
         $this->authorize('createLesson', $course);
@@ -42,6 +183,51 @@ class LessonController extends Controller
         ], 201);
     }
 
+    #[OA\Get(
+        path: "/api/lessons/{lesson}",
+        summary: "Get lesson details",
+        tags: ["Lessons"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "lesson",
+                in: "path",
+                required: true,
+                description: "Lesson ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        responses: [
+
+            new OA\Response(
+                response: 200,
+                description: "Lesson retrieved successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            ),
+
+            new OA\Response(
+                response: 404,
+                description: "Lesson not found"
+            )
+        ]
+    )]
     public function show(Lesson $lesson)
     {
         $this->authorize('view', $lesson);
@@ -53,6 +239,111 @@ class LessonController extends Controller
         ]);
     }
 
+    #[OA\Put(
+        path: "/api/lessons/{lesson}",
+        summary: "Update a lesson",
+        tags: ["Lessons"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "lesson",
+                in: "path",
+                required: true,
+                description: "Lesson ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        requestBody: new OA\RequestBody(
+            required: true,
+
+            content: new OA\JsonContent(
+                required: [
+                    "title"
+                ],
+
+                properties: [
+
+                    new OA\Property(
+                        property: "title",
+                        type: "string",
+                        example: "Updated Laravel Container"
+                    ),
+
+                    new OA\Property(
+                        property: "description",
+                        type: "string",
+                        nullable: true,
+                        example: "Updated description"
+                    ),
+
+                    new OA\Property(
+                        property: "video_url",
+                        type: "string",
+                        format: "url",
+                        nullable: true,
+                        example: "https://example.com/video-updated.mp4"
+                    ),
+
+                    new OA\Property(
+                        property: "order",
+                        type: "integer",
+                        nullable: true,
+                        example: 2
+                    ),
+
+                    new OA\Property(
+                        property: "is_free",
+                        type: "boolean",
+                        nullable: true,
+                        example: true
+                    ),
+
+                    new OA\Property(
+                        property: "duration",
+                        type: "integer",
+                        nullable: true,
+                        example: 60
+                    )
+                ]
+            )
+        ),
+
+        responses: [
+
+            new OA\Response(
+                response: 200,
+                description: "Lesson updated successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            ),
+
+            new OA\Response(
+                response: 404,
+                description: "Lesson not found"
+            ),
+
+            new OA\Response(
+                response: 422,
+                description: "Validation error"
+            )
+        ]
+    )]
     public function update(LessonRequest $request, Lesson $lesson)
     {
         $this->authorize('update', $lesson);
@@ -68,6 +359,51 @@ class LessonController extends Controller
         ]);
     }
 
+    #[OA\Delete(
+        path: "/api/lessons/{lesson}",
+        summary: "Delete a lesson",
+        tags: ["Lessons"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "lesson",
+                in: "path",
+                required: true,
+                description: "Lesson ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        responses: [
+
+            new OA\Response(
+                response: 200,
+                description: "Lesson deleted successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            ),
+
+            new OA\Response(
+                response: 404,
+                description: "Lesson not found"
+            )
+        ]
+    )]
     public function destroy(Lesson $lesson)
     {
         $this->authorize('delete', $lesson);
@@ -79,6 +415,46 @@ class LessonController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: "/api/lessons/{lesson}/complete",
+        summary: "Mark lesson as completed",
+        tags: ["Lesson Progress"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "lesson",
+                in: "path",
+                required: true,
+                description: "Lesson ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        responses: [
+
+            new OA\Response(
+                response: 200,
+                description: "Lesson completed successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            )
+        ]
+    )]
     public function complete(Request $request, Lesson $lesson)
     {
         $this->authorize('view', $lesson);
