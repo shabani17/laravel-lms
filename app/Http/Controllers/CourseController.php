@@ -65,6 +65,40 @@ class CourseController extends Controller
         ], 201);
     }
 
+
+    #[OA\Get(
+        path: "/api/courses/{course}",
+        summary: "Get single course",
+        tags: ["Courses"],
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "course",
+                description: "Course ID",
+                in: "path",
+                required: true,
+                example: 1
+            )
+        ],
+
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Course details",
+                content: new OA\JsonContent(
+                    ref: "#/components/schemas/Course"
+                )
+            ),
+
+            new OA\Response(
+                response: 404,
+                description: "Course not found"
+            )
+        ]
+    )]
     public function show(Course $course)
     {
         return new CourseResource($course->load('teacher'));

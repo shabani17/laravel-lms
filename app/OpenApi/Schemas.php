@@ -105,9 +105,44 @@ use OpenApi\Attributes as OA;
             property: "status",
             type: "string",
             example: "published"
+        ),
+        new OA\Property(
+            property: "teacher",
+            ref: "#/components/schemas/Teacher"
+        ),
+
+        new OA\Property(
+            property: "created_at",
+            type: "string",
+            format: "date-time",
+            example: "2026-07-31T20:00:00Z"
         )
     ]
 )]
+
+#[OA\Schema(
+        schema: "Teacher",
+        type: "object",
+        properties: [
+            new OA\Property(
+                property: "id",
+                type: "integer",
+                example: 2
+            ),
+
+            new OA\Property(
+                property: "name",
+                type: "string",
+                example: "Ali Teacher"
+            ),
+
+            new OA\Property(
+                property: "email",
+                type: "string",
+                example: "teacher@test.com"
+            )
+        ]
+    )]
 
 class Schemas
 {
