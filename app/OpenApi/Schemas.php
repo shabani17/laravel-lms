@@ -60,6 +60,55 @@ use OpenApi\Attributes as OA;
     ]
 )]
 
+#[OA\Schema(
+    schema: "Course",
+    type: "object",
+    properties: [
+        new OA\Property(
+            property: "id",
+            type: "integer",
+            example: 1
+        ),
+
+        new OA\Property(
+            property: "title",
+            type: "string",
+            example: "Laravel From Zero to Hero"
+        ),
+
+        new OA\Property(
+            property: "slug",
+            type: "string",
+            example: "laravel-from-zero-to-hero"
+        ),
+
+        new OA\Property(
+            property: "description",
+            type: "string",
+            example: "Complete Laravel course."
+        ),
+
+        new OA\Property(
+            property: "price",
+            type: "number",
+            format: "float",
+            example: 499.99
+        ),
+
+        new OA\Property(
+            property: "level",
+            type: "string",
+            example: "beginner"
+        ),
+
+        new OA\Property(
+            property: "status",
+            type: "string",
+            example: "published"
+        )
+    ]
+)]
+
 class Schemas
 {
 }

@@ -11,6 +11,7 @@ use App\Mappers\CourseFilterMapper;
 use App\Models\Course;
 use App\Services\CourseService;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 
 class CourseController extends Controller
@@ -22,6 +23,25 @@ class CourseController extends Controller
         $this->courseService = $courseService;
     }
 
+
+    #[OA\Get(
+        path: "/api/courses",
+        summary: "Get list of courses",
+        tags: ["Courses"],
+
+        responses: [
+                new OA\Response(
+                    response: 200,
+                    description: "List of courses",
+                    content: new OA\JsonContent(
+                        type: "array",
+                        items: new OA\Items(
+                            ref: "#/components/schemas/Course"
+                        )
+                    )
+                )
+        ]
+    )]
     public function index(CourseListRequest $request)
     {
         $filters = CourseFilterMapper::fromRequest($request);
