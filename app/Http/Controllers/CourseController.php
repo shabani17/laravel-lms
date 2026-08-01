@@ -307,6 +307,50 @@ class CourseController extends Controller
         return new CourseResource($course->load('teacher'));
     }
 
+    #[OA\Delete(
+        path: "/api/courses/{course}",
+        summary: "Delete a course",
+        tags: ["Courses"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "course",
+                in: "path",
+                required: true,
+                description: "Course ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        responses: [
+            new OA\Response(
+                response: 204,
+                description: "Course deleted successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            ),
+
+            new OA\Response(
+                response: 404,
+                description: "Course not found"
+            )
+        ]
+    )]
     public function destroy(Course $course)
     {
         $this->authorize('delete', $course);
