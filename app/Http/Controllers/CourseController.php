@@ -192,6 +192,109 @@ class CourseController extends Controller
         return new CourseResource($course->load('teacher'));
     }
 
+    #[OA\Put(
+        path: "/api/courses/{course}",
+        summary: "Update an existing course",
+        tags: ["Courses"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        parameters: [
+            new OA\Parameter(
+                name: "course",
+                in: "path",
+                required: true,
+                description: "Course ID",
+                schema: new OA\Schema(
+                    type: "integer",
+                    example: 1
+                )
+            )
+        ],
+
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+
+                    new OA\Property(
+                        property: "title",
+                        type: "string",
+                        example: "Laravel Advanced Course Updated"
+                    ),
+
+                    new OA\Property(
+                        property: "slug",
+                        type: "string",
+                        example: "laravel-advanced-updated"
+                    ),
+
+                    new OA\Property(
+                        property: "description",
+                        type: "string",
+                        example: "Updated course description"
+                    ),
+
+                    new OA\Property(
+                        property: "price",
+                        type: "number",
+                        example: 120
+                    ),
+
+                    new OA\Property(
+                        property: "level",
+                        type: "string",
+                        enum: [
+                            "beginner",
+                            "intermediate",
+                            "advanced"
+                        ],
+                        example: "advanced"
+                    ),
+
+                    new OA\Property(
+                        property: "status",
+                        type: "string",
+                        enum: [
+                            "draft",
+                            "published"
+                        ],
+                        example: "published"
+                    )
+                ]
+            )
+        ),
+
+        responses: [
+
+            new OA\Response(
+                response: 200,
+                description: "Course updated successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 403,
+                description: "Unauthorized action"
+            ),
+
+            new OA\Response(
+                response: 404,
+                description: "Course not found"
+            ),
+
+            new OA\Response(
+                response: 422,
+                description: "Validation error"
+            )
+        ]
+    )]
     public function update(UpdateCourseRequest $request, Course $course)
     {
         $this->authorize('update', $course);
