@@ -52,6 +52,94 @@ class CourseController extends Controller
         
     }
 
+    #[OA\Post(
+        path: "/api/courses",
+        summary: "Create a new course",
+        tags: ["Courses"],
+
+        security: [
+            ["sanctum" => []]
+        ],
+
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: [
+                    "title",
+                    "slug",
+                    "price",
+                    "level",
+                    "status"
+                ],
+
+                properties: [
+
+                    new OA\Property(
+                        property: "title",
+                        type: "string",
+                        example: "Laravel Advanced Course"
+                    ),
+
+                    new OA\Property(
+                        property: "slug",
+                        type: "string",
+                        example: "laravel-advanced-course"
+                    ),
+
+                    new OA\Property(
+                        property: "description",
+                        type: "string",
+                        example: "Learn Laravel from beginner to advanced"
+                    ),
+
+                    new OA\Property(
+                        property: "price",
+                        type: "number",
+                        example: 99.99
+                    ),
+
+                    new OA\Property(
+                        property: "level",
+                        type: "string",
+                        enum: [
+                            "beginner",
+                            "intermediate",
+                            "advanced"
+                        ],
+                        example: "advanced"
+                    ),
+
+                    new OA\Property(
+                        property: "status",
+                        type: "string",
+                        enum: [
+                            "draft",
+                            "published"
+                        ],
+                        example: "published"
+                    )
+                ]
+            )
+        ),
+
+        responses: [
+
+            new OA\Response(
+                response: 201,
+                description: "Course created successfully"
+            ),
+
+            new OA\Response(
+                response: 401,
+                description: "Unauthenticated"
+            ),
+
+            new OA\Response(
+                response: 422,
+                description: "Validation error"
+            )
+        ]
+    )]
     public function store(StoreCourseRequest $request)
     {
         $course = $this->courseService->create(
