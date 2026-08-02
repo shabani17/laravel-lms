@@ -118,8 +118,19 @@ class LessonServiceTest extends TestCase
     {
         $course = Course::factory()->create();
 
-        Lesson::factory()->count(3)->create([
+                Lesson::factory()->create([
             'course_id' => $course->id,
+            'order' => 1,
+        ]);
+
+        Lesson::factory()->create([
+            'course_id' => $course->id,
+            'order' => 2,
+        ]);
+
+        Lesson::factory()->create([
+            'course_id' => $course->id,
+            'order' => 3,
         ]);
 
         $repository = Mockery::mock(LessonRepositoryInterface::class);
