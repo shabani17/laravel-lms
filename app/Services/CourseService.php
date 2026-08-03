@@ -57,7 +57,7 @@ class CourseService
     {
 
         return Cache::remember(
-            CacheKeys::COURSES_LIST,
+            CacheKeys::courses($filters),
             now()->addMinutes(30),
             fn () => $this->courseRepository->list($filters)
         );

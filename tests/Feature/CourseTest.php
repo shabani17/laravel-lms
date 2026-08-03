@@ -95,4 +95,22 @@ public function test_teacher_can_delete_course()
         'id' => $course->id,
     ]);
 }
+
+public function test_course_creation_requires_title(): void
+    {
+        $teacher = User::factory()->create([
+            'role' => 'teacher',
+        ]);
+
+        $token = $teacher->createToken('test')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson('/api/courses', [
+                'description' => 'Test Description',
+            ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['title']);
+    }
 }
