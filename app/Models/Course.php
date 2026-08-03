@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Lesson;
+use App\Models\User;
+use App\Models\Enrollment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +22,7 @@ protected $fillable = [
     'level',
     'status',
     'teacher_id',
+    'thumbnail'
 ];
     
 public function teacher(): BelongsTo
