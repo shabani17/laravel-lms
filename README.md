@@ -1,180 +1,89 @@
 # Laravel LMS API
 
-A backend Learning Management System API built with Laravel.
+![Laravel Tests](https://github.com/shabani17/laravel-lms/actions/workflows/tests.yml/badge.svg)
 
-This project provides a complete backend for managing courses, lessons, enrollments, user authentication, progress tracking, notifications, caching and file uploads.
+A professional Learning Management System API built with Laravel.
 
 ## Features
 
 - User authentication with Laravel Sanctum
-- Role-based authorization
+- Role based authorization
 - Course management
 - Lesson management
-- Enrollment system
+- Course enrollment
 - Lesson progress tracking
 - Course thumbnail upload
-- Lesson video upload
-- File upload service
-- Notifications
-- Queue jobs
+- Lesson video upload support
+- Queue notifications
 - Redis cache support
-- Repository pattern
-- Service layer architecture
-- Form Request validation
-- API Resources
 - Swagger API documentation
-- Automated tests
+- Feature and Unit testing
+- GitHub Actions CI
 
-## Technologies
+## Tech Stack
 
 - PHP 8.2
 - Laravel 12
 - MySQL 8
 - Redis
 - Docker
-- Laravel Sanctum
 - PHPUnit
-- Swagger / OpenAPI
+- Laravel Sanctum
+- Swagger
 
 ## Architecture
 
-The project uses a layered architecture:
-
-```
-app
-├── Http
-│   ├── Controllers
-│   ├── Requests
-│   └── Resources
-│
-├── Services
-│
-├── Repositories
-│   ├── Contracts
-│   └── Eloquent
-│
-├── Policies
-│
-└── Models
-```
+- Controllers
+- Form Requests
+- Services
+- Repository Pattern
+- Policies
+- API Resources
+- DTOs
 
 ## Installation
 
-Clone the repository:
+Clone repository:
 
-```bash
-git clone <repository-url>
-```
+git clone https://github.com/shabani17/laravel-lms.git
 
-Enter the project:
+cd laravel-lms
 
-```bash
-cd lms
-```
+Run Docker:
+
+docker compose up -d --build
 
 Install dependencies:
 
-```bash
-composer install
-```
+docker compose exec app composer install
 
-Create environment file:
+Create environment:
 
-```bash
 cp .env.example .env
-```
 
-Generate application key:
+Generate key:
 
-```bash
-php artisan key:generate
-```
-
-## Docker Setup
-
-Build and run containers:
-
-```bash
-docker compose up -d --build
-```
+docker compose exec app php artisan key:generate
 
 Run migrations:
 
-```bash
-php artisan migrate
-```
+docker compose exec app php artisan migrate
 
-Run tests:
+## Running Tests
 
-```bash
-php artisan test
-```
+Run:
 
-## Environment Configuration
-
-Example:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=lms
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
-
-REDIS_HOST=redis
-REDIS_PORT=6379
-```
-
-Use your own local credentials.
+docker compose exec app php artisan test
 
 ## API Documentation
 
-Swagger documentation:
+Swagger:
 
-```
 /api/documentation
-```
 
-## Testing
+## CI/CD
 
-The project includes tests for:
-
-- Authentication
-- Courses
-- Lessons
-- Enrollment
-- Notifications
-- Progress tracking
-- Service layer
-
-Current test status:
-
-```
-42 tests passed
-```
-
-## Main Modules
-
-### Courses
-
-- Create courses
-- Update courses
-- Delete courses
-- Upload thumbnails
-- Manage lessons
-
-### Lessons
-
-- Create lessons
-- Update lessons
-- Upload videos
-- Track completion progress
-
-### Enrollment
-
-- Student enrollment
-- Enrollment notifications
+GitHub Actions runs tests automatically on every push and pull request.
 
 ## License
 
