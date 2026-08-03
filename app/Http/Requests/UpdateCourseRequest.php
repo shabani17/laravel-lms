@@ -28,6 +28,13 @@ class UpdateCourseRequest extends FormRequest
             'price' => ['required', 'numeric'],
             'level' => ['required', 'string'],
             'status' => ['required', 'string'],
+
+            'thumbnail' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048',
+            ],
         ];
     }
 }

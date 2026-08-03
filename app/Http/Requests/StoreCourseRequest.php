@@ -31,7 +31,13 @@ class StoreCourseRequest extends FormRequest
             'level' => ['required', 'in:beginner,intermediate,advanced'],
 
             'status' => ['required', 'in:draft,published'],
+
+            'thumbnail' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048',
+            ],
         ];
-        
     }
 }

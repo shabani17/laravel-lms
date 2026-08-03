@@ -13,23 +13,44 @@ class CourseService
 {
     private CourseRepositoryInterface $courseRepository;
 
-    public function __construct(CourseRepositoryInterface $courseRepository)
+    public function __construct(CourseRepositoryInterface $courseRepository, private FileUploadService $fileUploadService)
     {
         $this->courseRepository = $courseRepository;
     }
 
+    
     public function create(array $data, User $user): Course
     {
+        if (isset($data['thumbnail'])) {
+            $data['thumbnail'] = $this->fileUploadService
+                ->uploadImage(
+                    $data['thumbnail'],
+                    'courses/thumbnails'
+                );
+        }
+
         $course = $this->courseRepository->create([
             ...$data,
             'teacher_id' => $user->id,
         ]);
-        Cache::forget(CacheKeys::COURSES_LIST);
-        return $course;
+            Cache::forget(CacheKeys::COURSES_LIST);
+            return $course;
     }
 
     public function update(Course $course, array $data): Course
     {
+    if (isset($data['thumbnail'])) {
+
+        $this->fileUploadService->delete(
+            $course->thumbnail
+        );
+
+        $data['thumbnail'] = $this->fileUploadService->uploadImage(
+            $data['thumbnail'],
+            'courses/thumbnails'
+        );
+    }
+
         $course =$this->courseRepository->update($course, $data);
         Cache::forget(CacheKeys::COURSES_LIST);
         return $course;
