@@ -14,12 +14,19 @@ class LessonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'video_url' => ['nullable', 'url'],
-            'order' => ['nullable', 'integer', 'min:1'],
-            'is_free' => ['nullable', 'boolean'],
-            'duration' => ['nullable', 'integer', 'min:0'],
+        'title' => ['required', 'string', 'max:255'],
+        'description' => ['nullable', 'string'],
+
+        'video' => [
+            'nullable',
+            'file',
+            'mimetypes:video/mp4,video/quicktime,video/x-msvideo,video/x-matroska',
+            'max:102400',
+        ],
+
+        'order' => ['nullable', 'integer', 'min:1'],
+        'is_free' => ['nullable', 'boolean'],
+        'duration' => ['nullable', 'integer', 'min:0'],
         ];
     }
 }

@@ -11,11 +11,21 @@ use App\Repositories\Contracts\LessonRepositoryInterface;
 class LessonService
 {
     public function __construct(
-        private LessonRepositoryInterface $lessonRepository
+        private LessonRepositoryInterface $lessonRepository,
+        private FileUploadService $fileUploadService,
     ) {}
 
     public function create(Course $course, array $data): Lesson
     {
+        if (isset($data['video'])) {
+            $data['video_url'] = $this->fileUploadService->uploadVideo(
+                $data['video'],
+                'lessons/videos'
+            );
+
+            unset($data['video']);
+        }
+
         return $this->lessonRepository->create([
             ...$data,
             'course_id' => $course->id,
@@ -34,6 +44,17 @@ class LessonService
 
     public function update(Lesson $lesson, array $data): Lesson
     {
+        if (isset($data['video'])) {
+            $this->fileUploadService->delete($lesson->video_url);
+
+            $data['video_url'] = $this->fileUploadService->uploadVideo(
+                $data['video'],
+                'lessons/videos'
+            );
+
+            unset($data['video']);
+        }
+
         return $this->lessonRepository->update($lesson, $data);
     }
 

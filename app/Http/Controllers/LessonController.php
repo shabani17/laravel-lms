@@ -114,9 +114,9 @@ class LessonController extends Controller
                     ),
 
                     new OA\Property(
-                        property: "video_url",
+                        property: "video",
                         type: "string",
-                        format: "url",
+                        format: "binary",
                         nullable: true,
                         example: "https://example.com/video.mp4"
                     ),
@@ -285,9 +285,9 @@ class LessonController extends Controller
                     ),
 
                     new OA\Property(
-                        property: "video_url",
+                        property: "video",
                         type: "string",
-                        format: "url",
+                        format: "binary",
                         nullable: true,
                         example: "https://example.com/video-updated.mp4"
                     ),
